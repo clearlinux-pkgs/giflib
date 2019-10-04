@@ -4,16 +4,16 @@
 #
 Name     : giflib
 Version  : 5.2.1
-Release  : 2
+Release  : 3
 URL      : https://sourceforge.net/projects/giflib/files/giflib-5.2.1.tar.gz
 Source0  : https://sourceforge.net/projects/giflib/files/giflib-5.2.1.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : MIT
 Requires: giflib-bin = %{version}-%{release}
+Requires: giflib-lib = %{version}-%{release}
 Requires: giflib-license = %{version}-%{release}
 Requires: giflib-man = %{version}-%{release}
-Requires: giflib-plugins = %{version}-%{release}
 BuildRequires : xmlto
 
 %description
@@ -33,12 +33,22 @@ bin components for the giflib package.
 %package dev
 Summary: dev components for the giflib package.
 Group: Development
+Requires: giflib-lib = %{version}-%{release}
 Requires: giflib-bin = %{version}-%{release}
 Provides: giflib-devel = %{version}-%{release}
 Requires: giflib = %{version}-%{release}
 
 %description dev
 dev components for the giflib package.
+
+
+%package lib
+Summary: lib components for the giflib package.
+Group: Libraries
+Requires: giflib-license = %{version}-%{release}
+
+%description lib
+lib components for the giflib package.
 
 
 %package license
@@ -55,14 +65,6 @@ Group: Default
 
 %description man
 man components for the giflib package.
-
-
-%package plugins
-Summary: plugins components for the giflib package.
-Group: Default
-
-%description plugins
-plugins components for the giflib package.
 
 
 %package staticdev
@@ -82,7 +84,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1570001909
+export SOURCE_DATE_EPOCH=1570227954
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -95,14 +97,11 @@ make  %{?_smp_mflags}  all
 
 
 %install
-export SOURCE_DATE_EPOCH=1570001909
+export SOURCE_DATE_EPOCH=1570227954
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/giflib
 cp COPYING %{buildroot}/usr/share/package-licenses/giflib/COPYING
-%make_install
-## install_append content
-make install PREFIX=%{buildroot}/usr
-## install_append end
+make install DESTDIR=%{buildroot} PREFIX=/usr LIBDIR=/usr/lib64
 
 %files
 %defattr(-,root,root,-)
@@ -119,7 +118,12 @@ make install PREFIX=%{buildroot}/usr
 %files dev
 %defattr(-,root,root,-)
 /usr/include/gif_lib.h
-/usr/lib/libgif.so
+/usr/lib64/libgif.so
+
+%files lib
+%defattr(-,root,root,-)
+/usr/lib64/libgif.so.7
+/usr/lib64/libgif.so.7.2.0
 
 %files license
 %defattr(0644,root,root,0755)
@@ -141,11 +145,6 @@ make install PREFIX=%{buildroot}/usr
 /usr/share/man/man1/giftool.1
 /usr/share/man/man1/gifwedge.1
 
-%files plugins
-%defattr(-,root,root,-)
-/usr/lib/libgif.so.7
-/usr/lib/libgif.so.7.2.0
-
 %files staticdev
 %defattr(-,root,root,-)
-/usr/lib/libgif.a
+/usr/lib64/libgif.a
