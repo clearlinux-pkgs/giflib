@@ -4,18 +4,42 @@
 #
 Name     : giflib
 Version  : 5.2.1
-Release  : 1
+Release  : 2
 URL      : https://sourceforge.net/projects/giflib/files/giflib-5.2.1.tar.gz
 Source0  : https://sourceforge.net/projects/giflib/files/giflib-5.2.1.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : MIT
+Requires: giflib-bin = %{version}-%{release}
 Requires: giflib-license = %{version}-%{release}
+Requires: giflib-man = %{version}-%{release}
+Requires: giflib-plugins = %{version}-%{release}
+BuildRequires : xmlto
 
 %description
 = GIFLIB =
 Latest versions of GIFLIB are currently hosted at:
 http://sourceforge.net/projects/giflib
+
+%package bin
+Summary: bin components for the giflib package.
+Group: Binaries
+Requires: giflib-license = %{version}-%{release}
+
+%description bin
+bin components for the giflib package.
+
+
+%package dev
+Summary: dev components for the giflib package.
+Group: Development
+Requires: giflib-bin = %{version}-%{release}
+Provides: giflib-devel = %{version}-%{release}
+Requires: giflib = %{version}-%{release}
+
+%description dev
+dev components for the giflib package.
+
 
 %package license
 Summary: license components for the giflib package.
@@ -23,6 +47,31 @@ Group: Default
 
 %description license
 license components for the giflib package.
+
+
+%package man
+Summary: man components for the giflib package.
+Group: Default
+
+%description man
+man components for the giflib package.
+
+
+%package plugins
+Summary: plugins components for the giflib package.
+Group: Default
+
+%description plugins
+plugins components for the giflib package.
+
+
+%package staticdev
+Summary: staticdev components for the giflib package.
+Group: Default
+Requires: giflib-dev = %{version}-%{release}
+
+%description staticdev
+staticdev components for the giflib package.
 
 
 %prep
@@ -33,7 +82,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1570000678
+export SOURCE_DATE_EPOCH=1570001909
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -42,19 +91,61 @@ export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
 export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
 export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
-make  %{?_smp_mflags}
+make  %{?_smp_mflags}  all
 
 
 %install
-export SOURCE_DATE_EPOCH=1570000678
+export SOURCE_DATE_EPOCH=1570001909
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/giflib
 cp COPYING %{buildroot}/usr/share/package-licenses/giflib/COPYING
 %make_install
+## install_append content
+make install PREFIX=%{buildroot}/usr
+## install_append end
 
 %files
 %defattr(-,root,root,-)
 
+%files bin
+%defattr(-,root,root,-)
+/usr/bin/gif2rgb
+/usr/bin/gifbuild
+/usr/bin/gifclrmp
+/usr/bin/giffix
+/usr/bin/giftext
+/usr/bin/giftool
+
+%files dev
+%defattr(-,root,root,-)
+/usr/include/gif_lib.h
+/usr/lib/libgif.so
+
 %files license
 %defattr(0644,root,root,0755)
 /usr/share/package-licenses/giflib/COPYING
+
+%files man
+%defattr(0644,root,root,0755)
+/usr/share/man/man1/gif2rgb.1
+/usr/share/man/man1/gifbg.1
+/usr/share/man/man1/gifbuild.1
+/usr/share/man/man1/gifclrmp.1
+/usr/share/man/man1/gifcolor.1
+/usr/share/man/man1/gifecho.1
+/usr/share/man/man1/giffix.1
+/usr/share/man/man1/gifhisto.1
+/usr/share/man/man1/gifinto.1
+/usr/share/man/man1/giflib.1
+/usr/share/man/man1/giftext.1
+/usr/share/man/man1/giftool.1
+/usr/share/man/man1/gifwedge.1
+
+%files plugins
+%defattr(-,root,root,-)
+/usr/lib/libgif.so.7
+/usr/lib/libgif.so.7.2.0
+
+%files staticdev
+%defattr(-,root,root,-)
+/usr/lib/libgif.a
