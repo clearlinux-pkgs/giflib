@@ -4,7 +4,7 @@
 #
 Name     : giflib
 Version  : 5.2.1
-Release  : 3
+Release  : 4
 URL      : https://sourceforge.net/projects/giflib/files/giflib-5.2.1.tar.gz
 Source0  : https://sourceforge.net/projects/giflib/files/giflib-5.2.1.tar.gz
 Summary  : No detailed summary available
