@@ -4,7 +4,7 @@
 #
 Name     : giflib
 Version  : 5.2.1
-Release  : 4
+Release  : 5
 URL      : https://sourceforge.net/projects/giflib/files/giflib-5.2.1.tar.gz
 Source0  : https://sourceforge.net/projects/giflib/files/giflib-5.2.1.tar.gz
 Summary  : No detailed summary available
@@ -78,29 +78,30 @@ staticdev components for the giflib package.
 
 %prep
 %setup -q -n giflib-5.2.1
+cd %{_builddir}/giflib-5.2.1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1570227954
+export SOURCE_DATE_EPOCH=1605556807
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 make  %{?_smp_mflags}  all
 
 
 %install
-export SOURCE_DATE_EPOCH=1570227954
+export SOURCE_DATE_EPOCH=1605556807
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/giflib
-cp COPYING %{buildroot}/usr/share/package-licenses/giflib/COPYING
+cp %{_builddir}/giflib-5.2.1/COPYING %{buildroot}/usr/share/package-licenses/giflib/f9c9a2d3495a0766b4cf20d4b90cfe714dab3dc1
 make install DESTDIR=%{buildroot} PREFIX=/usr LIBDIR=/usr/lib64
 
 %files
@@ -127,7 +128,7 @@ make install DESTDIR=%{buildroot} PREFIX=/usr LIBDIR=/usr/lib64
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/giflib/COPYING
+/usr/share/package-licenses/giflib/f9c9a2d3495a0766b4cf20d4b90cfe714dab3dc1
 
 %files man
 %defattr(0644,root,root,0755)
